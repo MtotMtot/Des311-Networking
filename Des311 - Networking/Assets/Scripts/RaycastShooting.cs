@@ -39,8 +39,17 @@ public class RaycastShooting : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void ShootServer(int damageToGive, Vector3 position, Vector3 direction)
     {
-        if (Physics.Raycast(position, direction, out RaycastHit hit) && hit.transform.TryGetComponent(out PlayerHealth enemyHealth))
+        //the raycast for debug
+        Physics.Raycast(position, direction, out RaycastHit thit);
+
+        //drawray
+        Debug.DrawRay(position, direction, Color.red);
+        //drawLine
+        Debug.DrawLine(position, thit.transform.position, Color.green, 1.0f);
+        if (Physics.Raycast(position, direction, out RaycastHit hit) && hit.transform.CompareTag("PlayerCollider"))
         {
+            PlayerHealth enemyHealth = hit.transform.gameObject.GetComponentInParent<PlayerHealth>();
+            Debug.Log("passed rayhit and componet check");
             enemyHealth.health -= damageToGive;
         }
     }
