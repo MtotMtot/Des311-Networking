@@ -373,9 +373,10 @@
 -analyzer:"G:/Unity/2023.1.8f1/Editor/Data/Tools/Unity.SourceGenerators/Unity.SourceGenerators.dll"
 "Assets/FishNet/Upgrading/MirrorUpgrade.cs"
 "Assets/FishNet/Upgrading/UpgradeFromMirrorMenu.cs"
-"Assets/Scripts/moveCam.cs"
-"Assets/Scripts/PlayerCam.cs"
 "Assets/Scripts/PlayerController.cs"
+"Assets/Scripts/PlayerHealth.cs"
+"Assets/Scripts/PlayerSpawnObject.cs"
+"Assets/Scripts/RaycastShooting.cs"
 -langversion:9.0
 
 /deterministic
