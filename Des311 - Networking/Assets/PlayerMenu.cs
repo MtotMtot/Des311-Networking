@@ -11,11 +11,13 @@ using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using Unity.Networking.Transport.Relay;
 using FishNet.Transporting.UTP;
+using TMPro;
 
 public class PlayerMenu : MonoBehaviour
 {
     [SerializeField] private NetworkManager _networkManager;
     public string jCode;
+    public TMP_Text jCodeText;
 
     void Start()
     {
@@ -27,17 +29,23 @@ public class PlayerMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            //StartClientWithRelay(jCode);
+            StartClientWithRelay(jCode);
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
             StartHostWithRelay(3);
         }
 
+        if (Input.GetKeyDown(KeyCode.F1))
+        {
+            Debug.developerConsoleVisible = true;
+            Debug.Log("console enabled");
+        }
+
     }
 
 
-    public async Task<string> StartHostWithRelay(int maxConnections = 5)
+    public async void StartHostWithRelay(int maxConnections = 5)
     {
         //Initialize the Unity Services engine
         await UnityServices.InitializeAsync();
@@ -59,12 +67,14 @@ public class PlayerMenu : MonoBehaviour
         if (_networkManager.ServerManager.StartConnection()) // Server is successfully started.
         {
             _networkManager.ClientManager.StartConnection();
-            return joinCode;
+            jCode = joinCode;
+            jCodeText.text = joinCode;
+            Debug.Log(jCode);
         }
-        return null;
+        jCode =  null;
     }
 
-    public async Task<bool> StartClientWithRelay(string joinCode)
+    public async void StartClientWithRelay(string joinCode)
     {
         //Initialize the Unity Services engine
         await UnityServices.InitializeAsync();
@@ -81,6 +91,6 @@ public class PlayerMenu : MonoBehaviour
         var unityTransport = _networkManager.TransportManager.GetTransport<FishyUnityTransport>();
         unityTransport.SetRelayServerData(new RelayServerData(joinAllocation, "dtls"));
         // Start client
-        return !string.IsNullOrEmpty(joinCode) && _networkManager.ClientManager.StartConnection();
+        Debug.Log( !string.IsNullOrEmpty(joinCode) && _networkManager.ClientManager.StartConnection() );
     }
 }
