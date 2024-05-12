@@ -6,6 +6,8 @@ TagManager:
   tags:
   - HealthText
   - PlayerCollider
+  - RelayManager
+  - MainMenu
   layers:
   - Default
   - TransparentFX
