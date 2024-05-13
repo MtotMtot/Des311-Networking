@@ -33,12 +33,12 @@ public class ProjectileBehaviour : NetworkBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if((other.tag == "PlayerCollider") && (other.gameObject != ownerColl.gameObject)) //deal damage to player
+        if((other.tag == "PlayerCollider") && (other.gameObject != ownerColl.gameObject)) //only deal damage if hitting other players, not owner
         {
             Debug.Log("Hit player");
             DealDamage(damage, other.gameObject);
         }
-        else if (other.tag == "Projectile") //do nothing fi hit self or other projectile
+        else if (other.tag == "Projectile") //do nothing if hit self or other projectile
         {
             
         }
@@ -49,6 +49,7 @@ public class ProjectileBehaviour : NetworkBehaviour
         
     }
 
+    // Server RPC for dealing damage to target
     [ServerRpc(RequireOwnership = false)]
     private void DealDamage(int damage, GameObject other)
     {
@@ -59,6 +60,7 @@ public class ProjectileBehaviour : NetworkBehaviour
         Destroy(gameObj);
     }
 
+    // Server RPC for destroying projectile (not done locally as projectile can destroy itself before deal damage function has been completed)
     [ServerRpc(RequireOwnership = false)]
     private void DestroyProjectile()
     {

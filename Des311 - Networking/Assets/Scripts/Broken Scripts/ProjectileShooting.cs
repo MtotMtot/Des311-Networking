@@ -31,12 +31,13 @@ public class ProjectileShooting : NetworkBehaviour
             fireTimer -= Time.deltaTime;
     }
 
-
+    // local function call to shoot for client
     private void Shoot()
     {
-        ShootServer(Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation);
+        ShootServer(Camera.main.transform.position + Camera.main.transform.forward, Camera.main.transform.rotation); //uses camera position and rotation to spawn projectile in fron of cam
     }
 
+    // Server RPC to spawn the projectile and give it the player's collider
     [ServerRpc(RequireOwnership = false)]
     private void ShootServer(Vector3 position, Quaternion rotation)
     {
