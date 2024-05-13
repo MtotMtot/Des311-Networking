@@ -9,6 +9,7 @@ public class PlayerHealth : NetworkBehaviour
 {
     [SyncVar] public int health = 10;
     private TextMeshProUGUI healthText;
+    public GameObject playerObj;
 
     private void Start()
     {
@@ -21,5 +22,16 @@ public class PlayerHealth : NetworkBehaviour
             return;
 
         healthText.text = health.ToString();
+
+        if(health <= 0)
+        {
+            DestroyPlayer();
+        }
+    }
+
+    [ServerRpc]
+    private void DestroyPlayer()
+    {
+        Destroy(playerObj);
     }
 }

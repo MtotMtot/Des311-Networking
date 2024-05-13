@@ -17,13 +17,13 @@ public class PlayerSpawnObject : NetworkBehaviour
 
     private void Update()
     {
-        //spawns obj with local reference to it
+        // spawns obj with local reference to it
         if (spawnedObject == null && Input.GetKeyDown(KeyCode.Alpha1))
         {
             SpawnObject(objToSpawn, transform, this);
         }
 
-        //spawns despawns object if it is spawned (isnt null)
+        // spawns despawns object if it is spawned (isnt null)
         if (spawnedObject != null && Input.GetKeyDown(KeyCode.Alpha2))
         {
             DespawnObject(spawnedObject);

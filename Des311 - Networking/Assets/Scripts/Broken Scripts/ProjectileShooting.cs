@@ -8,8 +8,9 @@ public class ProjectileShooting : NetworkBehaviour
 {
 
     public GameObject projectile;
-    public float timeBetweenFire;
+    public float timeBetweenFire = 0.6f;
     float fireTimer;
+    public Collider playerColl;
 
 
     private void Update()
@@ -40,6 +41,8 @@ public class ProjectileShooting : NetworkBehaviour
     private void ShootServer(Vector3 position, Quaternion rotation)
     {
         GameObject spawned = Instantiate(projectile, position, rotation);
+        ProjectileBehaviour temp = spawned.GetComponent<ProjectileBehaviour>();
+        temp.ownerColl = playerColl;
         ServerManager.Spawn(spawned);
         
     }

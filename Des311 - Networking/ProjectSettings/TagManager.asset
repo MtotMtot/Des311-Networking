@@ -8,6 +8,7 @@ TagManager:
   - PlayerCollider
   - RelayManager
   - MainMenu
+  - Projectile
   layers:
   - Default
   - TransparentFX

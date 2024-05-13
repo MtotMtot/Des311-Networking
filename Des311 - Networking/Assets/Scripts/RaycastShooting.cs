@@ -31,6 +31,7 @@ public class RaycastShooting : NetworkBehaviour
             fireTimer -= Time.deltaTime;
     }
 
+    
     private void Shoot()
     {
         ShootServer(damage, Camera.main.transform.position, Camera.main.transform.forward);

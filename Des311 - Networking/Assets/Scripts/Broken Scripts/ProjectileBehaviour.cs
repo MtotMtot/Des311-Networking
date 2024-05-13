@@ -8,6 +8,8 @@ public class ProjectileBehaviour : NetworkBehaviour
     public int damage;
     public GameObject gameObj;
     private Rigidbody rb;
+    private float lifetime = 4;
+    public Collider ownerColl;
 
     void Start()
     {
@@ -16,33 +18,50 @@ public class ProjectileBehaviour : NetworkBehaviour
         rb.AddForce(transform.forward*20, ForceMode.Impulse);
     }
 
+    void Update()
+    {
+        if (!base.IsOwner)
+            return;
+
+        lifetime -= Time.deltaTime;
+
+        if (lifetime <= 0)
+        {
+            DestroyProjectile();
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "PlayerCollider")
+        if((other.tag == "PlayerCollider") && (other.gameObject != ownerColl.gameObject)) //deal damage to player
         {
-            DealDamage(damage, other.transform);
+            Debug.Log("Hit player");
+            DealDamage(damage, other.gameObject);
         }
-        else
+        else if (other.tag == "Projectile") //do nothing fi hit self or other projectile
         {
-            Destroy(gameObj);
+            
+        }
+        else //destroy projetile if hits anything else
+        {
+            DestroyProjectile();
         }
         
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DealDamage(int damage, Transform transform)
+    private void DealDamage(int damage, GameObject other)
     {
-        Debug.Log("made it into dealDamageFunc");
 
-        if(transform.TryGetComponent<PlayerHealth>(out PlayerHealth enemyHealth))
-        {
-            enemyHealth.health -= damage;
-            Debug.Log("I hit enemy");
-            Destroy(gameObj);
-        }
-        else
-        {
-            Destroy(gameObj);
-        }
+        PlayerHealth enemyHealth = other.GetComponentInParent<PlayerHealth>();
+        enemyHealth.health -= damage;
+        Debug.Log("I hit enemy");
+        Destroy(gameObj);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyProjectile()
+    {
+        Destroy(gameObj);
     }
 }
